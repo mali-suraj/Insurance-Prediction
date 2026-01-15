@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Insurance Prediction</title>
+
+        <style>
+            *{
+                box-sizing: border-box;
+                font-family: "segoe ui", Tahoma, Geneva, Verdana, sans-serif;
+            }
+            body{
+                margin: 0;
+                min-height: 100vh;
+                background: linear-gradient(135deg,#2563eb,#1e40af);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color:#111827;         
+            }
+            .container{
+                background: #fff;
+                width: 100%;
+                max-width: 600px;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 25);
+                text-align: center;
+            }
+            .container h1{
+                margin: 0;
+                color: #1e3a8a;
+                font-size: 26px;
+            }
+            .tagline{
+                font-size: 14px;
+                color: #6b7280;
+                margin: 8px 0 25px;
+            }
+            .icon{
+                font-size: 50px;
+                color: #2563eb;
+                margin-bottom: 15px;
+            }
+            input{
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                border: 1px solid #d1d5db;
+                border-radius: 8px;
+                outline: none;
+                font-size: 16px;
+
+            }
+            input:focus{
+                border-color: #2563eb;
+               
+            }
+            button{
+                width: 100%;
+   
+                padding: 10px;
+                margin-top: 15px;
+                border: none;
+                border-radius: 8px;
+                background: #2563eb;
+                color: #fff;
+                font-size: 18px;
+                cursor: pointer;
+            }
+            button:hover{
+                background: #1e40af;
+            }
+            .result{
+                margin-top: 20px;
+                padding: 14px;
+                border-radius: 10px;
+                background: #d1d5db;
+                font-size: 20px;
+                font-weight: bold;
+                color: #111827;
+            }
+            .result.yes{
+                background: #86efac;
+                color: #166534;
+            }
+            .result.no{
+                background: #fca5a5;
+                color: #7f1d1d;
+            }
+            .footer{
+                margin-top: 20px;
+                font-size: 12px;
+                color: #6b7280;
+            }
+        </style>
+    </head>    
+<body>
+    <div class="container">
+        <div class="icon">🛡️</div>
+        <h1>Insurance Prediction</h1>
+        <div class="tagline">Predict insurance purchase likelihood based on age using machine learning</div>
+        <form action="/predict" method="POST" onsubmit="return validateAge()">
+            <input type="number" name="age" id="age" placeholder="Enter your age (0-120)" required min="0" max="120">
+            <span id="error" style="color: #dc2626; font-size: 14px; display: none; margin-top: 5px;">Age must be between 0 and 120</span>
+            <button type="submit">Predict</button>
+        </form>
+        <script>
+            function validateAge() {
+                const age = document.getElementById('age').value;
+                const errorSpan = document.getElementById('error');
+                if (age < 0 || age > 120) {
+                    errorSpan.style.display = 'block';
+                    return false;
+                }
+                errorSpan.style.display = 'none';
+                return true;
+            }
+        </script>
+        {% if prediction is not none %}
+        <div class="result {% if prediction == 1 %}yes{% else %}no{% endif %}">
+            {% if prediction == 1 %}
+                ✓ Likely to buy insurance
+            {% else %}
+                ✗ Unlikely to buy insurance
+            {% endif %}
+            <div style="margin-top: 10px; font-size: 16px;">
+                Confidence: {{ probability }}%
+            </div>
+        </div>
+        {% endif %}
+        <div class="footer">©Insurance Predictor</div>
+    </div>
+</body>
+        
+</html>
